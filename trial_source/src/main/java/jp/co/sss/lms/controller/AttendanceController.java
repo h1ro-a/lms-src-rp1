@@ -1,6 +1,7 @@
 package jp.co.sss.lms.controller;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +42,25 @@ public class AttendanceController {
 	 */
 	@RequestMapping(path = "/detail", method = RequestMethod.GET)
 	public String index(Model model) {
+		
 
 		// 勤怠一覧の取得
 		List<AttendanceManagementDto> attendanceManagementDtoList = studentAttendanceService
 				.getAttendanceManagement(loginUserDto.getCourseId(), loginUserDto.getLmsUserId());
+		
+		Date date = new Date();
+		//　出退勤に空欄があるかどうかの判別
+		for (AttendanceManagementDto dto : attendanceManagementDtoList) {
+			if (dto.getTrainingStartTime().equals("") || dto.getTrainingEndTime().equals("")) {
+				if (dto.getTrainingDate().before(date)) {
+					System.out.println(dto.getTrainingDate());
+					System.out.println("記入がありません");
+//					return "attendance/modal";
+				}
+			}
+		}
 		model.addAttribute("attendanceManagementDtoList", attendanceManagementDtoList);
-
+		
 		return "attendance/detail";
 	}
 
@@ -83,7 +97,8 @@ public class AttendanceController {
 	 */
 	@RequestMapping(path = "/detail", params = "punchOut", method = RequestMethod.POST)
 	public String punchOut(Model model) {
-
+		
+		
 		// 更新前のチェック
 		String error = studentAttendanceService.punchCheck(Constants.CODE_VAL_LEAVING);
 		model.addAttribute("error", error);
