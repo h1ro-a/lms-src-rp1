@@ -53,8 +53,6 @@ public class AttendanceController {
 		for (AttendanceManagementDto dto : attendanceManagementDtoList) {
 			if (dto.getTrainingStartTime().equals("") || dto.getTrainingEndTime().equals("")) {
 				if (dto.getTrainingDate().before(date)) {
-					System.out.println(dto.getTrainingDate());
-					System.out.println("記入がありません");
 					model.addAttribute("alertMessage", "過去日に未入力の勤怠があります。");
 				}
 			}
