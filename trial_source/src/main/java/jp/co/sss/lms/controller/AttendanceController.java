@@ -55,7 +55,7 @@ public class AttendanceController {
 				if (dto.getTrainingDate().before(date)) {
 					System.out.println(dto.getTrainingDate());
 					System.out.println("記入がありません");
-//					return "attendance/modal";
+					model.addAttribute("alertMessage", "過去日に未入力の勤怠があります。");
 				}
 			}
 		}
