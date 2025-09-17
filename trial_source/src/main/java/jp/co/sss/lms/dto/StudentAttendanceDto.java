@@ -30,5 +30,6 @@ public class StudentAttendanceDto {
 	private Integer blankTime;
 	/** 勤怠状態画面表示名 */
 	private String statusDispName;
-
+	/** 出退勤に空欄がある日*/
+	private Integer countBlankDay;
 }

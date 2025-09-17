@@ -1,7 +1,6 @@
 package jp.co.sss.lms.controller;
 
 import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +37,6 @@ public class AttendanceController {
 	 * @param courseId
 	 * @param model
 	 * @return 勤怠管理画面
-	 * @throws ParseException
 	 */
 	@RequestMapping(path = "/detail", method = RequestMethod.GET)
 	public String index(Model model) {
@@ -48,13 +46,11 @@ public class AttendanceController {
 		List<AttendanceManagementDto> attendanceManagementDtoList = studentAttendanceService
 				.getAttendanceManagement(loginUserDto.getCourseId(), loginUserDto.getLmsUserId());
 		
-		Date date = new Date();
+		
 		//　出退勤に空欄があるかどうかの判別
 		for (AttendanceManagementDto dto : attendanceManagementDtoList) {
-			if (dto.getTrainingStartTime().equals("") || dto.getTrainingEndTime().equals("")) {
-				if (dto.getTrainingDate().before(date)) {
-					model.addAttribute("alertMessage", "過去日に未入力の勤怠があります。");
-				}
+			if (dto.getCountBlankDay() > 0) {
+				model.addAttribute("alertMessage", "過去日に未入力の勤怠があります。");
 			}
 		}
 		model.addAttribute("attendanceManagementDtoList", attendanceManagementDtoList);
@@ -153,6 +149,8 @@ public class AttendanceController {
 		List<AttendanceManagementDto> attendanceManagementDtoList = studentAttendanceService
 				.getAttendanceManagement(loginUserDto.getCourseId(), loginUserDto.getLmsUserId());
 		model.addAttribute("attendanceManagementDtoList", attendanceManagementDtoList);
+		
+		// ここに更新した際の確認ダイアログ表示処理
 
 		return "attendance/detail";
 	}
