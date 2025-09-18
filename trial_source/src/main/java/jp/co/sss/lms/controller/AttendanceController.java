@@ -122,9 +122,11 @@ public class AttendanceController {
 		List<AttendanceManagementDto> attendanceManagementDtoList = studentAttendanceService
 				.getAttendanceManagement(loginUserDto.getCourseId(), loginUserDto.getLmsUserId());
 		// 勤怠フォームの生成
-		AttendanceForm attendanceForm = studentAttendanceService
+		AttendanceForm attendanceForm = studentAttendanceService // エラー発生個所
 				.setAttendanceForm(attendanceManagementDtoList);
 		model.addAttribute("attendanceForm", attendanceForm);
+		
+		
 
 		return "attendance/update";
 	}
