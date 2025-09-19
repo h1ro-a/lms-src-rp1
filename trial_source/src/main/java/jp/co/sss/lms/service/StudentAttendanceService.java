@@ -229,18 +229,16 @@ public class StudentAttendanceService {
 	 */
 	public AttendanceForm setAttendanceForm(
 		List<AttendanceManagementDto> attendanceManagementDtoList) {
-
-		AttendanceForm attendanceForm = new AttendanceForm();
+		AttendanceForm attendanceForm = new AttendanceForm(); //エラー発生
 		attendanceForm.setAttendanceList(new ArrayList<DailyAttendanceForm>());
 		attendanceForm.setLmsUserId(loginUserDto.getLmsUserId());
 		attendanceForm.setUserName(loginUserDto.getUserName());
 		attendanceForm.setLeaveFlg(loginUserDto.getLeaveFlg());
 		attendanceForm.setBlankTimes(attendanceUtil.setBlankTime());
-		attendanceForm.setTrainingStartTimeHour(attendanceUtil.setHour());
-		attendanceForm.setTrainingStratTimeMunite(attendanceUtil.setMinutes());
-		attendanceForm.setTrainingEndTimeHour(attendanceUtil.setHour());
-		attendanceForm.setTrainingStratTimeMunite(attendanceUtil.setMinutes());
-		attendanceForm.setAttendanceList(null);
+//		attendanceForm.setTrainingStartTimeHour(attendanceUtil.setHour());
+//		attendanceForm.setTrainingStratTimeMunite(attendanceUtil.setMinutes());
+//		attendanceForm.setTrainingEndTimeHour(attendanceUtil.setHour());
+//		attendanceForm.setTrainingStratTimeMunite(attendanceUtil.setMinutes());
 		// 途中退校している場合のみ設定
 		if (loginUserDto.getLeaveDate() != null) {
 			attendanceForm
@@ -264,10 +262,10 @@ public class StudentAttendanceService {
 				dailyAttendanceForm.setBlankTimeValue(String.valueOf(
 						attendanceUtil.calcBlankTime(attendanceManagementDto.getBlankTime())));
 			}
-			dailyAttendanceForm.setTrainingStartTimeHour(attendanceUtil.setHour());
-			dailyAttendanceForm.setTrainingStratTimeMunite(attendanceUtil.setMinutes());
-			dailyAttendanceForm.setTrainingEndTimeHour(attendanceUtil.setHour());
-			dailyAttendanceForm.setTrainingEndTimeMinute(attendanceUtil.setMinutes());
+//			dailyAttendanceForm.setTrainingStartTimeHour(attendanceUtil.setHour());
+//			dailyAttendanceForm.setTrainingStratTimeMunite(attendanceUtil.setMinutes());
+//			dailyAttendanceForm.setTrainingEndTimeHour(attendanceUtil.setHour());
+//			dailyAttendanceForm.setTrainingEndTimeMinute(attendanceUtil.setMinutes());
 			dailyAttendanceForm.setStatus(String.valueOf(attendanceManagementDto.getStatus()));
 			dailyAttendanceForm.setNote(attendanceManagementDto.getNote());
 			dailyAttendanceForm.setSectionName(attendanceManagementDto.getSectionName());

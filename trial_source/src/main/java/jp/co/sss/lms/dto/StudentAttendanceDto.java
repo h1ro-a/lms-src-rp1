@@ -32,4 +32,13 @@ public class StudentAttendanceDto {
 	private String statusDispName;
 	/** 出退勤に空欄がある日*/
 	private Integer countBlankDay;
+//	/** 出勤時間（時) */
+//	private Integer trainingStartTimeHour;
+//	/** 出勤時間（分）　*/
+//	private Integer trainingStratTimeMunite;
+//	/** 退勤時間（時） */
+//	private Integer trainingEndTimeHour;
+//	/** 退勤時間（分） */
+//	private Integer trainingEndTimeMinute;
+	
 }

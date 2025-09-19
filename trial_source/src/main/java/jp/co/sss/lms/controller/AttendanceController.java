@@ -66,6 +66,7 @@ public class AttendanceController {
 	 */
 	@RequestMapping(path = "/detail", params = "punchIn", method = RequestMethod.POST)
 	public String punchIn(Model model) {
+		System.out.println("hoge");
 
 		// 更新前のチェック
 		String error = studentAttendanceService.punchCheck(Constants.CODE_VAL_ATWORK);
@@ -117,13 +118,16 @@ public class AttendanceController {
 	 */
 	@RequestMapping(path = "/update")
 	public String update(Model model) {
+		System.out.println("hoge1");
 
 		// 勤怠管理リストの取得
 		List<AttendanceManagementDto> attendanceManagementDtoList = studentAttendanceService
 				.getAttendanceManagement(loginUserDto.getCourseId(), loginUserDto.getLmsUserId());
+		System.out.println("hoge2");
 		// 勤怠フォームの生成
-		AttendanceForm attendanceForm = studentAttendanceService // エラー発生個所
+		AttendanceForm attendanceForm = studentAttendanceService
 				.setAttendanceForm(attendanceManagementDtoList);
+		System.out.println("hoge3");
 		model.addAttribute("attendanceForm", attendanceForm);
 		
 		
