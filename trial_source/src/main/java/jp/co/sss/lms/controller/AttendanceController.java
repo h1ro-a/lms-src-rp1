@@ -39,7 +39,7 @@ public class AttendanceController {
 	 * @return 勤怠管理画面
 	 */
 	@RequestMapping(path = "/detail", method = RequestMethod.GET)
-	public String index(Model model) {
+	public String index(Model model) throws Exception {
 		
 
 		// 勤怠一覧の取得
@@ -65,7 +65,7 @@ public class AttendanceController {
 	 * @return 勤怠管理画面
 	 */
 	@RequestMapping(path = "/detail", params = "punchIn", method = RequestMethod.POST)
-	public String punchIn(Model model) {
+	public String punchIn(Model model) throws ParseException {
 		System.out.println("hoge");
 
 		// 更新前のチェック
@@ -91,7 +91,7 @@ public class AttendanceController {
 	 * @return 勤怠管理画面
 	 */
 	@RequestMapping(path = "/detail", params = "punchOut", method = RequestMethod.POST)
-	public String punchOut(Model model) {
+	public String punchOut(Model model) throws ParseException {
 		
 		
 		// 更新前のチェック
@@ -117,7 +117,7 @@ public class AttendanceController {
 	 * @return 勤怠情報直接変更画面
 	 */
 	@RequestMapping(path = "/update")
-	public String update(Model model) {
+	public String update(Model model) throws ParseException {
 		System.out.println("hoge1");
 
 		// 勤怠管理リストの取得

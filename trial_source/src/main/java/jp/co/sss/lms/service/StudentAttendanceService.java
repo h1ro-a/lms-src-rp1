@@ -1,9 +1,12 @@
 package jp.co.sss.lms.service;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +55,7 @@ public class StudentAttendanceService {
 	 * @return 勤怠管理画面用DTOリスト
 	 */
 	public List<AttendanceManagementDto> getAttendanceManagement(Integer courseId,
-			Integer lmsUserId) {
+			Integer lmsUserId) throws ParseException {
 
 		// 勤怠管理リストの取得
 		List<AttendanceManagementDto> attendanceManagementDtoList = tStudentAttendanceMapper
@@ -63,20 +66,18 @@ public class StudentAttendanceService {
 				TrainingTime blankTime = attendanceUtil.calcBlankTime(dto.getBlankTime());
 				dto.setBlankTimeValue(String.valueOf(blankTime));
 			}
-			
-//			SimpleDateFormat sdf = new SimpleDateFormat("EEE/MMM/dd/HH:mm:ss/z/yyyy", Locale.ENGLISH);
-//			Date today = new Date();
-//			String formattedDate = sdf.format(today);
-//			
-//			int count = 0;
-//			if (dto.getTrainingStartTime().equals("") || dto.getTrainingEndTime().equals("")) {
-//				if (dto.getTrainingDate().) {
-//					
-//					count++;
-//				}
-//			}
-//			dto.setCountBlankDay(count);
-			
+			Calendar calendar = Calendar.getInstance();
+			SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+			String str = sdf.format(calendar.getTime());
+			Date today = sdf.parse(str);
+			int count = 0;
+			Integer tStudentNECount = tStudentAttendanceMapper
+					.notEnterCount(lmsUserId, Constants.DB_FLG_FALSE, today);
+			System.out.println(tStudentNECount);
+			if (tStudentNECount > 0) {
+				count++;
+				dto.setCountBlankDay(count);
+			}
 			// 遅刻早退区分判定
 			AttendanceStatusEnum statusEnum = AttendanceStatusEnum.getEnum(dto.getStatus());
 			if (statusEnum != null) {
