@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import jp.co.sss.lms.dto.AttendanceManagementDto;
 import jp.co.sss.lms.dto.LoginUserDto;
+import jp.co.sss.lms.dto.StudentAttendanceDto;
 import jp.co.sss.lms.form.AttendanceForm;
 import jp.co.sss.lms.service.StudentAttendanceService;
 import jp.co.sss.lms.util.Constants;
@@ -29,13 +30,14 @@ public class AttendanceController {
 	private StudentAttendanceService studentAttendanceService;
 	@Autowired
 	private LoginUserDto loginUserDto;
-
+	@Autowired
+	private StudentAttendanceDto studentAttendanceDto;
+	
 	/**
 	 * 勤怠管理画面 初期表示
 	 * 
 	 * @param lmsUserId
 	 * @param courseId
-	 * @param model
 	 * @return 勤怠管理画面
 	 */
 	@RequestMapping(path = "/detail", method = RequestMethod.GET)
@@ -47,17 +49,23 @@ public class AttendanceController {
 				.getAttendanceManagement(loginUserDto.getCourseId(), loginUserDto.getLmsUserId());
 		
 		
-		//　出退勤に空欄があるかどうかの判別
-		for (AttendanceManagementDto dto : attendanceManagementDtoList) {
-			if (dto.getCountBlankDay() > 0) {
-				model.addAttribute("alertMessage", "過去日に未入力の勤怠があります。");
-			}
-		}
 		model.addAttribute("attendanceManagementDtoList", attendanceManagementDtoList);
-		
+		//　出退勤に空欄があるかどうかの判別
+		System.out.println("ctrl1");
+		Integer notEnterCount = studentAttendanceService.getNotEnterCount(loginUserDto.getLmsUserId(), studentAttendanceDto.getTrainingDate()
+				,loginUserDto.getCourseId());
+		System.out.println(notEnterCount);
+		if (notEnterCount > 0) {
+			model.addAttribute("alertMessage", "過去日に未入力の勤怠があります。"); // trueを返すように修正
+		}
+//		for (AttendanceManagementDto dto : attendanceManagementDtoList) {
+//			if (dto.getCountBlankDay() > 0) {
+//				model.addAttribute("alertMessage", "過去日に未入力の勤怠があります。");
+//			}
+//		}
 		return "attendance/detail";
 	}
-
+	
 	/**
 	 * 勤怠管理画面 『出勤』ボタン押下
 	 * 

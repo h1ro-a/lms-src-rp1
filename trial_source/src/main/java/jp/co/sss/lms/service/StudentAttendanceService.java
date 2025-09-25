@@ -66,18 +66,6 @@ public class StudentAttendanceService {
 				TrainingTime blankTime = attendanceUtil.calcBlankTime(dto.getBlankTime());
 				dto.setBlankTimeValue(String.valueOf(blankTime));
 			}
-			Calendar calendar = Calendar.getInstance();
-			SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-			String str = sdf.format(calendar.getTime());
-			Date today = sdf.parse(str);
-			int count = 0;
-			Integer tStudentNECount = tStudentAttendanceMapper
-					.notEnterCount(lmsUserId, Constants.DB_FLG_FALSE, today);
-			System.out.println(tStudentNECount);
-			if (tStudentNECount > 0) {
-				count++;
-				dto.setCountBlankDay(count);
-			}
 			// 遅刻早退区分判定
 			AttendanceStatusEnum statusEnum = AttendanceStatusEnum.getEnum(dto.getStatus());
 			if (statusEnum != null) {
@@ -90,6 +78,35 @@ public class StudentAttendanceService {
 
 		return attendanceManagementDtoList;
 	}
+	
+	/**
+	 * 勤怠情報(受験生入力)未入力件数取得
+	 * 
+	 * @param lmsUserId
+	 * @param deleteFlg
+	 * @param trainingDate
+	 * @param courseID
+	 * @return 未入力件数
+	 */
+	public Integer getNotEnterCount(Integer lmsUserId, Date trainingDate,
+			Integer courseId) throws ParseException {
+		Integer tStudentNECount = 0;
+		// 勤怠管理リストの取得
+		List<AttendanceManagementDto> attendanceManagementDtoList = tStudentAttendanceMapper
+				.getAttendanceManagement(courseId, lmsUserId, Constants.DB_FLG_FALSE);
+		for(AttendanceManagementDto dto : attendanceManagementDtoList) {
+			// 日付のフォーマットを指定
+			SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+			Calendar calendar = Calendar.getInstance();
+			String str = sdf.format(calendar.getTime());
+			Date today = sdf.parse(str);
+			tStudentNECount = tStudentAttendanceMapper
+					.notEnterCount(lmsUserId, Constants.DB_FLG_FALSE, today);
+			
+		}
+		return tStudentNECount;
+	}
+
 
 	/**
 	 * 出退勤更新前のチェック

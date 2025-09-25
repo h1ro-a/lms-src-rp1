@@ -21,5 +21,7 @@ public class AttendanceManagementDto extends StudentAttendanceDto {
 	private String blankTimeValue;
 	/** セクション名 */
 	private String sectionName;
+	/** 出退勤に空欄がある日*/
+	private Integer countBlankDay;
 
 }
