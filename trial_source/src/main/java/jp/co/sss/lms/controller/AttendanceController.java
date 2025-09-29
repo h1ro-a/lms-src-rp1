@@ -51,18 +51,11 @@ public class AttendanceController {
 		
 		model.addAttribute("attendanceManagementDtoList", attendanceManagementDtoList);
 		//　出退勤に空欄があるかどうかの判別
-		System.out.println("ctrl1");
 		Integer notEnterCount = studentAttendanceService.getNotEnterCount(loginUserDto.getLmsUserId(), studentAttendanceDto.getTrainingDate()
 				,loginUserDto.getCourseId());
-		System.out.println(notEnterCount);
-		if (notEnterCount > 0) {
-			model.addAttribute("alertMessage", "過去日に未入力の勤怠があります。"); // trueを返すように修正
-		}
-//		for (AttendanceManagementDto dto : attendanceManagementDtoList) {
-//			if (dto.getCountBlankDay() > 0) {
-//				model.addAttribute("alertMessage", "過去日に未入力の勤怠があります。");
-//			}
-//		}
+		boolean isNotEmpty = notEnterCount > 0;
+		System.out.println(isNotEmpty);
+		model.addAttribute("isNotEmpty", isNotEmpty); 
 		return "attendance/detail";
 	}
 	
@@ -74,8 +67,6 @@ public class AttendanceController {
 	 */
 	@RequestMapping(path = "/detail", params = "punchIn", method = RequestMethod.POST)
 	public String punchIn(Model model) throws ParseException {
-		System.out.println("hoge");
-
 		// 更新前のチェック
 		String error = studentAttendanceService.punchCheck(Constants.CODE_VAL_ATWORK);
 		model.addAttribute("error", error);

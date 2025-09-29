@@ -88,11 +88,11 @@
 		}
 		//過去日に未入力がある場合にダイアログを出力する処理
 		window.onload = function () {
-			let alertMessage = /*[[${alertMessage}]]*/ null;
-			
-			if (alertMessage !== null && alertMessage !== 'null') {
-				alert(alertMessage);
+			const isNotEmpty = /*[[${isNotEmpty}]]*/ false;
+			if (isNotEmpty) {
+				alert("過去日の勤怠に未入力があります。");
 			}
+			
 		};
 		//出勤／退勤ダイアログを出力する処理
 		const btn = document.getElementById('btn');
